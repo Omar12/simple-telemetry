@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model TelemetryEvent {
+  id         String   @id @default(cuid())
+  eventType  String
+  url        String
+  path       String
+  title      String?
+  referrer   String?
+  visitorId  String
+  sessionId  String
+  userAgent  String?
+  deviceType String?
+  browser    String?
+  os         String?
+  occurredAt DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([occurredAt])
+  @@index([path, occurredAt])
+  @@index([visitorId, occurredAt])
+}
