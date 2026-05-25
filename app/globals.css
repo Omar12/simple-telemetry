@@ -1,14 +1,24 @@
 :root {
   color-scheme: light;
-  --bg: #f5efe4;
-  --bg-strong: #fffaf0;
-  --ink: #1f1f1f;
-  --muted: #6d6457;
-  --line: #d8ccba;
-  --accent: #b6542f;
-  --accent-dark: #7d351b;
-  --card: rgba(255, 250, 240, 0.9);
+  --bg: oklch(0.96 0.012 82);
+  --bg-strong: oklch(0.985 0.008 82);
+  --ink: oklch(0.25 0.018 55);
+  --muted: oklch(0.52 0.015 60);
+  --line: oklch(0.86 0.014 75);
+  --accent: oklch(0.56 0.11 38);
+  --accent-dark: oklch(0.42 0.085 38);
+  --card: color-mix(in oklab, var(--bg-strong) 92%, white 8%);
   --shadow: 0 20px 40px rgba(77, 52, 36, 0.08);
+  --admin-bg: oklch(0.965 0.01 242);
+  --admin-bg-strong: oklch(0.988 0.006 242);
+  --admin-panel: oklch(0.99 0.004 242);
+  --admin-panel-muted: oklch(0.975 0.006 242);
+  --admin-ink: oklch(0.27 0.028 250);
+  --admin-muted: oklch(0.55 0.022 245);
+  --admin-line: oklch(0.87 0.014 240);
+  --admin-accent: oklch(0.57 0.11 254);
+  --admin-accent-strong: oklch(0.47 0.11 254);
+  --admin-shadow: 0 18px 38px rgba(31, 53, 94, 0.08);
 }
 
 * {
@@ -118,7 +128,7 @@ th {
 .button.primary,
 .filter-pill.active {
   background: var(--accent);
-  color: #fff7f0;
+  color: oklch(0.98 0.006 82);
 }
 
 .button:hover,
@@ -136,7 +146,7 @@ th {
 .privacy-note {
   margin: 1.5rem 0 0;
   padding: 1rem 1.1rem;
-  border-left: 4px solid var(--accent);
+  border: 1px solid color-mix(in oklab, var(--accent) 20%, var(--line) 80%);
   background: rgba(182, 84, 47, 0.08);
   color: var(--muted);
 }
@@ -147,7 +157,7 @@ th {
 
 .section-heading {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
@@ -207,85 +217,449 @@ th {
   color: var(--ink);
 }
 
-.admin-shell {
-  padding-top: 2rem;
+.admin-dashboard {
+  min-height: 100vh;
+  padding: 2rem 1.25rem 3rem;
+  background:
+    radial-gradient(circle at top left, rgba(82, 121, 214, 0.09), transparent 26%),
+    linear-gradient(180deg, var(--admin-bg-strong) 0%, var(--admin-bg) 100%);
+  color: var(--admin-ink);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 }
 
-.admin-header {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+.admin-topbar,
+.summary-strip,
+.analytics-composition {
+  width: min(1240px, 100%);
+  margin: 0 auto;
 }
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.metrics-grid {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+.admin-topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.9fr);
+  gap: 1.5rem;
+  align-items: end;
   margin-bottom: 1rem;
 }
 
-.metric-card {
-  padding: 1.25rem;
+.admin-title-block {
+  min-width: 0;
 }
 
-.metric-card p {
-  margin: 0 0 0.65rem;
-  color: var(--muted);
+.admin-kicker,
+.surface-eyebrow {
+  margin: 0 0 0.55rem;
+  color: var(--admin-accent-strong);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.admin-title-block h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  font-weight: 680;
+}
+
+.admin-intro {
+  max-width: 64ch;
+  margin: 0.8rem 0 0;
+  color: var(--admin-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.admin-toolbar {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid var(--admin-line);
+  border-radius: 22px;
+  background: color-mix(in oklab, var(--admin-panel-muted) 94%, white 6%);
+  box-shadow: var(--admin-shadow);
+}
+
+.range-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.admin-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.admin-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid var(--admin-line);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--admin-panel) 88%, white 12%);
+  color: var(--admin-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.admin-nav-link:hover,
+.admin-nav-link:focus-visible {
+  border-color: color-mix(in oklab, var(--admin-accent) 28%, var(--admin-line) 72%);
+  color: var(--admin-ink);
+  transform: translateY(-1px);
+}
+
+.admin-nav-link.active {
+  border-color: color-mix(in oklab, var(--admin-accent) 52%, var(--admin-line) 48%);
+  background: color-mix(in oklab, var(--admin-accent) 12%, var(--admin-panel) 88%);
+  color: var(--admin-accent-strong);
+}
+
+.range-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid var(--admin-line);
+  border-radius: 999px;
+  background: var(--admin-panel);
+  color: var(--admin-muted);
+  font-size: 0.92rem;
+  font-weight: 550;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.range-option:hover,
+.range-option:focus-visible {
+  border-color: color-mix(in oklab, var(--admin-accent) 28%, var(--admin-line) 72%);
+  color: var(--admin-ink);
+  transform: translateY(-1px);
+}
+
+.range-option.active {
+  border-color: color-mix(in oklab, var(--admin-accent) 52%, var(--admin-line) 48%);
+  background: color-mix(in oklab, var(--admin-accent) 12%, var(--admin-panel) 88%);
+  color: var(--admin-accent-strong);
+}
+
+.admin-toolbar-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.toolbar-note {
+  margin: 0;
+  color: var(--admin-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.admin-backlink {
+  color: var(--admin-accent-strong);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.summary-stat {
+  padding: 1rem 1rem 1.05rem;
+  border: 1px solid var(--admin-line);
+  border-radius: 20px;
+  background: color-mix(in oklab, var(--admin-panel) 95%, white 5%);
+  box-shadow: var(--admin-shadow);
+}
+
+.summary-stat-label,
+.summary-stat-detail {
+  margin: 0;
+}
+
+.summary-stat-label {
+  color: var(--admin-muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.summary-stat-value {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: 1.75rem;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 680;
+  overflow-wrap: anywhere;
+}
+
+.summary-stat-detail {
+  margin-top: 0.65rem;
+  color: var(--admin-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.analytics-composition {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.primary-column,
+.secondary-column {
+  display: grid;
+  gap: 1rem;
+}
+
+.dashboard-surface {
+  border: 1px solid var(--admin-line);
+  border-radius: 24px;
+  background: color-mix(in oklab, var(--admin-panel) 95%, white 5%);
+  box-shadow: var(--admin-shadow);
+}
+
+.trend-surface,
+.data-surface,
+.secondary-surface {
+  padding: 1rem;
+}
+
+.surface-header {
+  display: grid;
+  gap: 0.2rem;
+  margin-bottom: 0.95rem;
+}
+
+.surface-title-row {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.surface-title-row h2 {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  font-weight: 650;
+}
+
+.surface-title-row p {
+  margin: 0;
+  color: var(--admin-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.trend-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.trend-row {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.trend-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   font-size: 0.92rem;
 }
 
-.metric-card strong {
-  font-size: 1.7rem;
-  line-height: 1.1;
+.trend-meta span {
+  color: var(--admin-muted);
 }
 
-.dashboard-grid {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+.trend-meta strong {
+  font-size: 0.98rem;
 }
 
-.panel {
-  padding: 1.25rem;
+.trend-bar-track,
+.breakdown-bar-track {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--admin-line) 78%, var(--admin-panel) 22%);
 }
 
-.panel-heading {
+.trend-bar-track {
+  height: 0.7rem;
+}
+
+.trend-bar-fill,
+.breakdown-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--admin-accent) 80%, white 20%) 0%,
+      color-mix(in oklab, var(--admin-accent-strong) 86%, white 14%) 100%
+    );
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table-wrap table {
+  min-width: 100%;
+}
+
+.table-wrap th,
+.table-wrap td {
+  border-bottom: 1px solid color-mix(in oklab, var(--admin-line) 86%, white 14%);
+  padding: 0.85rem 0.5rem;
+}
+
+.table-wrap th {
+  color: var(--admin-muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+}
+
+.table-title-cell {
+  font-weight: 590;
+}
+
+.table-mono {
+  font-family:
+    ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.88rem;
+  color: var(--admin-muted);
+}
+
+.endpoint-banner {
+  display: grid;
+  gap: 0.35rem;
   margin-bottom: 1rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid color-mix(in oklab, var(--admin-accent) 18%, var(--admin-line) 82%);
+  border-radius: 18px;
+  background: color-mix(in oklab, var(--admin-accent) 7%, var(--admin-panel) 93%);
 }
 
-.breakdown-list {
+.endpoint-label {
+  color: var(--admin-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.endpoint-banner code,
+.code-block,
+.payload-list code,
+.install-steps code {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
+}
+
+.endpoint-banner code {
+  overflow-wrap: anywhere;
+  font-size: 0.92rem;
+}
+
+.code-block {
+  overflow-x: auto;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid color-mix(in oklab, var(--admin-line) 82%, white 18%);
+  border-radius: 20px;
+  background: oklch(0.225 0.02 252);
+  color: oklch(0.94 0.01 250);
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.install-steps,
+.payload-list {
   display: grid;
   gap: 0.75rem;
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--admin-ink);
+}
+
+.install-steps li,
+.payload-list li {
+  line-height: 1.6;
+}
+
+.breakdown-rows {
+  display: grid;
+  gap: 0.8rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.breakdown-list li {
+.breakdown-row {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.breakdown-copy {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
 }
 
-.empty-state {
-  padding: 1rem 0 0.25rem;
+.breakdown-copy span {
+  color: var(--admin-muted);
 }
 
-.empty-state h3 {
-  margin: 0 0 0.5rem;
+.breakdown-bar-track {
+  height: 0.5rem;
 }
 
-.empty-state p {
+.empty-panel {
+  padding: 1.2rem 0.1rem 0.25rem;
+}
+
+.empty-panel h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.empty-panel p {
+  max-width: 54ch;
   margin: 0;
-  color: var(--muted);
+  color: var(--admin-muted);
   line-height: 1.6;
 }
 
@@ -322,5 +696,63 @@ th {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
     font-size: 0.92rem;
+  }
+
+  .admin-dashboard {
+    padding: 1rem 0.75rem 1.5rem;
+  }
+
+  .admin-topbar,
+  .summary-strip,
+  .analytics-composition {
+    width: min(100%, 1240px);
+  }
+
+  .admin-topbar,
+  .analytics-composition,
+  .summary-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-title-block h1 {
+    font-size: 1.95rem;
+  }
+
+  .admin-toolbar,
+  .summary-stat,
+  .trend-surface,
+  .data-surface,
+  .secondary-surface {
+    padding: 0.95rem;
+    border-radius: 18px;
+  }
+
+  .admin-toolbar-meta {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .code-block {
+    font-size: 0.78rem;
+  }
+
+  .range-switcher {
+    gap: 0.45rem;
+  }
+
+  .range-option {
+    padding: 0.65rem 0.8rem;
+    font-size: 0.88rem;
+  }
+
+  .summary-stat-value {
+    font-size: 1.45rem;
+  }
+
+  .table-wrap th,
+  .table-wrap td {
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    font-size: 0.9rem;
   }
 }
